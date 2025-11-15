@@ -75,10 +75,13 @@ function scrollToDownload() {
 // Smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const href = this.getAttribute('href');
+        if (href && href !== '#') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
     });
 });
@@ -219,7 +222,23 @@ async function submitFeedback(e) {
 
     const formData = new FormData(e.target);
     const issues = formData.getAll('issues');
-    const fileNames = Array.from(files).map(f => f.name).join(', ');
+    
+    // Convert files to base64
+    const filePromises = Array.from(files).map(file => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                resolve({
+                    name: file.name,
+                    mimeType: file.type,
+                    data: e.target.result.split(',')[1]
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+    
+    const fileData = await Promise.all(filePromises);
     
     const data = {
         name: formData.get('name'),
@@ -229,12 +248,12 @@ async function submitFeedback(e) {
         smoothness: formData.get('smoothness'),
         detection: formData.get('detection'),
         issues: issues.join(', '),
-        attachments: fileNames,
+        files: fileData,
         feedback: formData.get('feedback')
     };
     
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwJl5dMRhfoe15coKKFcRoo2JL5PrpQqgPqk08cFz7B6lQntNTUtDxSaQkK4mISmSgR/exec', {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbz4Ml3BmwF49lr_AumN0g-N3dNoQLUENU9_yKFBHbeMffIhmcdRB3I9AzBGkCFpCixy/exec', {
             redirect: 'follow',
             method: 'POST',
             headers: {
