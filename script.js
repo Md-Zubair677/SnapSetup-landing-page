@@ -308,6 +308,16 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// Download function for SnapSetup
+function downloadSnapSetup() {
+    const link = document.createElement('a');
+    link.href = 'https://github.com/Md-Zubair677/SnapSetup-landing-page/releases/download/v1.0.0/SnapSetup-Setup-1.0.0.exe';
+    link.download = 'SnapSetup-Setup-1.0.0.exe';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 // Enhanced navigation for new sections
 document.addEventListener('DOMContentLoaded', () => {
     // Update navigation to include new sections
