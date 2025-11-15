@@ -311,8 +311,8 @@ window.addEventListener('scroll', () => {
 // Download function for SnapSetup
 function downloadSnapSetup() {
     const link = document.createElement('a');
-    link.href = 'https://github.com/Jubed437/SnapSetup/releases/download/V1.0.0/SnapSetup.Setup.1.0.0.1.exe';
-    link.download = 'SnapSetup.Setup.1.0.0.1.exe';
+    link.href = 'https://github.com/Jubed437/SnapSetup/releases/download/V1.0.0/SnapSetup.Setup.1.0.0.exe';
+    link.download = 'SnapSetup.Setup.1.0.0.exe';
     link.target = '_blank';
     document.body.appendChild(link);
     link.click();
