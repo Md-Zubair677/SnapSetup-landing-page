@@ -203,7 +203,7 @@ function removeFile(index) {
     fileInput.dispatchEvent(new Event('change'));
 }
 
-function submitFeedback(e) {
+async function submitFeedback(e) {
     e.preventDefault();
     
     if (!selectedRating) {
@@ -218,21 +218,48 @@ function submitFeedback(e) {
     }
 
     const formData = new FormData(e.target);
-    const email = formData.get('email');
+    const issues = formData.getAll('issues');
+    const fileNames = Array.from(files).map(f => f.name).join(', ');
     
-    // Show success message
-    document.querySelector('.feedback-form-content').style.display = 'none';
-    document.querySelector('.feedback-success').style.display = 'block';
+    const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        profession: formData.get('profession'),
+        rating: selectedRating,
+        smoothness: formData.get('smoothness'),
+        detection: formData.get('detection'),
+        issues: issues.join(', '),
+        attachments: fileNames,
+        feedback: formData.get('feedback')
+    };
     
-    if (email) {
-        document.getElementById('success-message').textContent = 'We read every submission. If you provided an email, we may follow up for clarification.';
+    try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwJl5dMRhfoe15coKKFcRoo2JL5PrpQqgPqk08cFz7B6lQntNTUtDxSaQkK4mISmSgR/exec', {
+            redirect: 'follow',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'text/plain'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        // Show success message
+        document.querySelector('.feedback-form-content').style.display = 'none';
+        document.querySelector('.feedback-success').style.display = 'block';
+        
+        if (data.email) {
+            document.getElementById('success-message').textContent = 'We read every submission. If you provided an email, we may follow up for clarification.';
+        }
+        
+        setTimeout(() => {
+            closeFeedback();
+            document.querySelector('.feedback-form-content').style.display = 'block';
+            document.querySelector('.feedback-success').style.display = 'none';
+        }, 3000);
+    } catch (error) {
+        console.error('Error submitting feedback:', error);
+        alert('Error submitting feedback. Please try again.');
     }
-    
-    setTimeout(() => {
-        closeFeedback();
-        document.querySelector('.feedback-form-content').style.display = 'block';
-        document.querySelector('.feedback-success').style.display = 'none';
-    }, 3000);
 }
 
 // Add parallax effect to hero background
