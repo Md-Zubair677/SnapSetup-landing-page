@@ -252,15 +252,17 @@ async function submitFeedback(e) {
         feedback: formData.get('feedback')
     };
     
+    console.log('Submitting data:', data);
+    
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbz4Ml3BmwF49lr_AumN0g-N3dNoQLUENU9_yKFBHbeMffIhmcdRB3I9AzBGkCFpCixy/exec', {
-            redirect: 'follow',
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyzdckrpKE7syBeIAtCbRF5iLStQ3CB2Q-nO3ey6gwSaT97H_grtp8GV3N6v_26VtuB3A/exec', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'text/plain'
-            },
             body: JSON.stringify(data)
         });
+        
+        console.log('Response status:', response.status);
+        const result = await response.text();
+        console.log('Response data:', result);
         
         // Show success message
         document.querySelector('.feedback-form-content').style.display = 'none';
