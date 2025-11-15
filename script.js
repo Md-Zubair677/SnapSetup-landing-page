@@ -283,6 +283,22 @@ async function submitFeedback(e) {
     }
 }
 
+// FAQ Toggle Functionality
+function toggleFAQ(button) {
+    const faqItem = button.parentElement;
+    const isActive = faqItem.classList.contains('active');
+    
+    // Close all FAQ items
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    
+    // Open clicked item if it wasn't active
+    if (!isActive) {
+        faqItem.classList.add('active');
+    }
+}
+
 // Add parallax effect to hero background
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
@@ -291,3 +307,62 @@ window.addEventListener('scroll', () => {
         hero.style.transform = `translateY(${scrolled * 0.3}px)`;
     }
 });
+
+// Enhanced navigation for new sections
+document.addEventListener('DOMContentLoaded', () => {
+    // Update navigation to include new sections
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks && window.innerWidth > 968) {
+        navLinks.innerHTML = `
+            <a href="#features">Features</a>
+            <a href="#why-snapsetup">Why SnapSetup</a>
+            <a href="#testimonials">Testimonials</a>
+            <a href="#faq">FAQ</a>
+            <a href="#download">Download</a>
+            <a href="#" onclick="openFeedback(event)">Feedback</a>
+        `;
+    }
+    
+    // Animate new sections on scroll
+    const newSections = document.querySelectorAll('.why-card, .persona-card, .use-case-card, .testimonial-card, .community-card, .security-feature');
+    newSections.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+});
+
+// Stats counter animation
+function animateStats() {
+    const stats = document.querySelectorAll('.stat-number');
+    stats.forEach(stat => {
+        const target = parseInt(stat.textContent.replace(/[^0-9]/g, ''));
+        let current = 0;
+        const increment = target / 100;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            const suffix = stat.textContent.includes('+') ? '+' : '';
+            stat.textContent = Math.floor(current).toLocaleString() + suffix;
+        }, 20);
+    });
+}
+
+// Trigger stats animation when footer comes into view
+const footerObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            animateStats();
+            footerObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+const footer = document.querySelector('.footer');
+if (footer) {
+    footerObserver.observe(footer);
+}
