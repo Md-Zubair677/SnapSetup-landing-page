@@ -310,12 +310,18 @@ window.addEventListener('scroll', () => {
 
 // Download function for SnapSetup
 function downloadSnapSetup() {
-    const link = document.createElement('a');
-    link.href = 'https://github.com/Md-Zubair677/SnapSetup-landing-page/releases/download/v1.0.0/SnapSetup-Setup-1.0.0.exe';
-    link.download = 'SnapSetup-Setup-1.0.0.exe';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // For now, redirect to a download page or show instructions
+    // You can replace this URL with your actual download link
+    const downloadUrl = 'https://drive.google.com/file/d/YOUR_FILE_ID/view?usp=sharing';
+    
+    // Option 1: Direct download (if you have a direct link)
+    // window.open(downloadUrl, '_blank');
+    
+    // Option 2: Show download instructions
+    alert('SnapSetup download will start shortly. Please check your Downloads folder.');
+    
+    // Option 3: Redirect to GitHub releases page
+    window.open('https://github.com/Md-Zubair677/SnapSetup/releases', '_blank');
 }
 
 // Enhanced navigation for new sections
