@@ -506,6 +506,30 @@ body {
     color: var(--text-muted);
 }
 
+.security-hash {
+    margin-top: 16px;
+    text-align: center;
+}
+
+.security-hash summary {
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.security-hash code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-cyan);
+    background: var(--bg-tertiary);
+    padding: 8px 12px;
+    border-radius: 4px;
+    word-break: break-all;
+    display: block;
+    margin-top: 8px;
+}
+
 /* Footer */
 .footer {
     background: var(--bg-secondary);
