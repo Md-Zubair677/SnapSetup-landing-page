@@ -377,3 +377,22 @@ const footer = document.querySelector('.footer');
 if (footer) {
     footerObserver.observe(footer);
 }
+// Mobile menu toggle
+function toggleMobileMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    
+    navLinks.classList.toggle('active');
+    menuBtn.classList.toggle('active');
+}
+
+// Close mobile menu when clicking on links
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            document.querySelector('.nav-links').classList.remove('active');
+            document.querySelector('.mobile-menu-btn').classList.remove('active');
+        });
+    });
+});
